@@ -34,6 +34,25 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 - Recherche de page
 - Page profil
 
+## Installation
+
+Pré-requis : Composer
+
+Ouvrez le terminal de votre ordinateur, allez dans le dossier d'installation du projet et cloner le dépot
+
+```
+git clone https://github.com/KizeRemi/Wiki-API.git
+
+```
+
+Puis
+```
+composer install
+
+```
+Suivre la procédure de configuration pour la base de données. Enjoy !
+
+
 Modèle
 ======
 
@@ -98,7 +117,7 @@ Routing API
 ## PageRevision
   * /page/{page_slug}/revision
     * POST   /
-    * GET    /{id}
+    * GET    /
     * PUT    /{id}
     * DELETE /{id}
     * GET    /
