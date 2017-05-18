@@ -1,31 +1,38 @@
 Wiki-API
 ========
-Brief: Réaliser un wiki à l'aide des technologies Angular (Front) et Symfony (Back)
 
-Fonctionnalités
-===============
+** Réalisé par Mavillaz Rémi and Paul Girardin**
 
-* Se connecter
-* S'inscrire
-* Se déconnecter
+Github KizeRemi: https://github.com/KizeRemi  
+GitHub PaulGirardin: https://github.com/PaulGirardin
+
+Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : API et Interface utilisateur. Ce dépot comporte uniquement la partie API réalisé sous Symfony 3.2
+
+
+##Fonctionnalités
+
+- [x] Inscription Utilisateur
+- [ ] Connexion/déconnexion
+- [ ] Gestion du profil
+- [ ] Gestion des rôles (anon, user, admin)
+- [ ] Gestion des pages
+- [ ] Recherche
+
+### Optionnel
+- [ ] Upload d'images
+- [ ] Système de badge
+- [ ] Commentaires
+- [ ] Catégories
+- [ ] Multilingue
+
 * Roles
   * ADMIN : Créer/Modifier/Suppriler
 -- USER : Créer/Modifier
 -- ANON : Lire
-- Créer une page
-- Modifier une page
-- Supprimer une page
 -- Interface de saisie WYSIWYG
 - Historique des modifications
 - Recherche de page
 - Page profil
-
-(Optionel)
-- Insertion d'image
-- Badge
-- Chat
-- Catégories
-- Multilingue
 
 Modèle
 ======
