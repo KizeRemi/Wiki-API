@@ -1,0 +1,8 @@
+page:
+    type:       rest
+    resource:   WikiBundle\Controller\PageController
+
+page_revision:
+    type:       rest
+    parent:     page
+    resource:   WikiBundle\Controller\RevisionController

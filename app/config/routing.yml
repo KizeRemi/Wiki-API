@@ -22,8 +22,12 @@ fos_user_change_password:
     prefix: /profile
 
 user:
-    type:   rest
+    type:       rest
     resource:   WikiBundle\Controller\UserController
+
+wiki_bundle_page:
+    type: rest
+    resource: "@WikiBundle/Resources/config/pages_routes.yml"
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"

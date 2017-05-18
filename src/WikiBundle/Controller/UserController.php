@@ -1,5 +1,4 @@
 <?php
-
 namespace WikiBundle\Controller;
 
 use WikiBundle\Entity\User;
@@ -34,7 +33,6 @@ class UserController extends Controller implements ClassResourceInterface
     public function cgetAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $users = $em->getRepository('WikiBundle:User')->findAll();
 
         return $users;
@@ -85,7 +83,7 @@ class UserController extends Controller implements ClassResourceInterface
         $userManager = $this->get("fos_user.user_manager");
         $user = $userManager->createUser();
         $user->setEmail($paramFetcher->get('email'));
-        $user->setUsername($paramFetcher->get('username'));
+        $user->setUsername(ucfirst($paramFetcher->get('username')));
         $user->setPlainPassword($paramFetcher->get('password'));
 
         $validator = $this->get("validator");

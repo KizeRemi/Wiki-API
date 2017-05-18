@@ -102,4 +102,13 @@ jms_serializer:
                 namespace_prefix: "FOS\\UserBundle"
                 path: "%kernel.root_dir%/config/serializer/fos"
 
-nelmio_api_doc: ~
+stof_doctrine_extensions:
+    default_locale: en
+    translation_fallback: true
+    orm:
+        default:
+            timestampable: true
+            sluggable: true
+
+nelmio_api_doc:
+    name:                 'Wiki API'

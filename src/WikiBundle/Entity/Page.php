@@ -94,4 +94,3 @@ class Page
         return $this->updatedAt;
     }
 }
-

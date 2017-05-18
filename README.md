@@ -45,16 +45,16 @@ Modèle
 * roles
 * created_at
 
-## UserStatistic
+## Experience
 * user_id
-* score
+* exp
 
 ## Page
 * id
 * created_at
 * updated_at
 
-## PageRevision
+## Revision
 * page_id
 * status: online|pending_validation|canceled|draft
 * title
