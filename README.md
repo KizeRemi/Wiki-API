@@ -1,7 +1,7 @@
 Wiki-API
 ========
 
-** Réalisé par Mavillaz Rémi and Paul Girardin**
+**Réalisé par Mavillaz Rémi and Paul Girardin**
 
 Github KizeRemi: https://github.com/KizeRemi  
 GitHub PaulGirardin: https://github.com/PaulGirardin
@@ -9,7 +9,7 @@ GitHub PaulGirardin: https://github.com/PaulGirardin
 Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : API et Interface utilisateur. Ce dépot comporte uniquement la partie API réalisé sous Symfony 3.2
 
 
-##Fonctionnalités
+## Fonctionnalités
 
 - [x] Inscription Utilisateur
 - [ ] Connexion/déconnexion
@@ -23,7 +23,6 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 - [ ] Système de badge
 - [ ] Commentaires
 - [ ] Catégories
-- [ ] Multilingue
 
 * Roles
   * ADMIN : Créer/Modifier/Suppriler

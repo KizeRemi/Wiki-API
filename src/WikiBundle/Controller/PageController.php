@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class PageController extends Controller implements ClassResourceInterface
 {
     /**
-     * @View()
      * @ApiDoc(
      *  section="Pages",
      *  description="Get all pages",
@@ -37,9 +36,9 @@ class PageController extends Controller implements ClassResourceInterface
     }
 
     /**
-     * @param User $user
+     * @param Page $page
      * @ApiDoc(
-     *  section="Users",
+     *  section="Pages",
      *  description="Get a page",
      *  resource = true,
      *  statusCodes = {
@@ -47,8 +46,8 @@ class PageController extends Controller implements ClassResourceInterface
      *     404 = "Not found"
      *   }
      * )
-     * @View()
      * @ParamConverter("page", class="WikiBundle:Page")
+     * @FOSRest\Get("/page/{page}")
      */
     public function getAction(Page $page)
     {

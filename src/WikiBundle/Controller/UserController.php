@@ -19,7 +19,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class UserController extends Controller implements ClassResourceInterface
 {
     /**
-     * @View()
      * @ApiDoc(
      *  section="Users",
      *  description="Get all users",
@@ -39,7 +38,6 @@ class UserController extends Controller implements ClassResourceInterface
     }
 
     /**
-     * @param User $user
      * @ApiDoc(
      *  section="Users",
      *  description="Get a user",
@@ -49,10 +47,10 @@ class UserController extends Controller implements ClassResourceInterface
      *     404 = "Not found"
      *   }
      * )
-     * @View()
      * @ParamConverter("user", class="WikiBundle:User")
+     * @FOSRest\Get("/user/{user}")
      */
-    public function getAction(User $user)
+    public function userAction(User $user)
     {
         return $user;
     }
@@ -72,6 +70,7 @@ class UserController extends Controller implements ClassResourceInterface
      * @RequestParam(name="password", nullable=false, description="Account's password")
      * @RequestParam(name="password_confirmation", nullable=false, description="Password confirmation")
      * @RequestParam(name="username", nullable=false, description="Account's nickname")
+     * @FOSRest\Post("/user")
      */
     public function postAction(ParamFetcherInterface $paramFetcher)
     {
