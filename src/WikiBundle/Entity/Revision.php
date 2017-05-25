@@ -27,13 +27,6 @@ class Revision
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=60)
-     */
-    private $status;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -62,6 +55,12 @@ class Revision
     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
     */
     protected $page;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="WikiBundle\Entity\Status")
+    * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+    */
+    protected $status;
 
     /**
      * Get id
@@ -71,30 +70,6 @@ class Revision
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return PageRevision
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -215,5 +190,29 @@ class Revision
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \WikiBundle\Entity\Status $status
+     *
+     * @return Revision
+     */
+    public function setStatus(\WikiBundle\Entity\Status $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \WikiBundle\Entity\Status
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

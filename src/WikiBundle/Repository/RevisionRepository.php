@@ -10,4 +10,15 @@ namespace WikiBundle\Repository;
  */
 class RevisionRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getLatestOnlineRevisionByPage($page){
+		$query = $this  ->createQueryBuilder('r')
+						->where('r.page = :page')
+						->andWhere('r.status = 1')
+					    ->orderBy('r.id', 'ASC')
+					    ->setMaxResults(1)
+					    ->setParameter('page', $page)
+					    ->getQuery();
+		return $query->getSingleResult();
+
+	}
 }

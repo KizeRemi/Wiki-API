@@ -6,3 +6,12 @@ page_revision:
     type:       rest
     parent:     page
     resource:   WikiBundle\Controller\RevisionController
+
+status:
+    type:       rest
+    resource:   WikiBundle\Controller\StatusController
+
+
+category:
+    type:       rest
+    resource:   WikiBundle\Controller\CategoryController
