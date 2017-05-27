@@ -31,10 +31,97 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Column(name="name",type="string", length=25, nullable=true)
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(name="lastname",type="string", length=25, nullable=true)
+     */
+    protected $lastname;
+
+    /**
+     * @ORM\Column(name="birth_date",type="date", length=25, nullable=true)
+     */
+    protected $birthDate;
+
     public function __construct()
     {
         parent::__construct();
         $this->roles = array(static::ROLE_USER);
         $this->enabled = 1;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     *
+     * @return User
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * Get lastname
+     *
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * Set birthDate
+     *
+     * @param \DateTime $birthDate
+     *
+     * @return User
+     */
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthDate
+     *
+     * @return \DateTime
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
     }
 }

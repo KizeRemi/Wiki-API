@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -92,8 +94,44 @@ class UserController extends Controller implements ClassResourceInterface
         } 
 
         $userManager->updateUser($user);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
         return new JsonResponse(null, JsonResponse::HTTP_CREATED);
     }
+
+    /**
+     * @ApiDoc(
+     *  section="Users",
+     *  description="Update the profil of user connected",
+     *  resource = true,
+     *  type="string",
+     *  statusCodes = {
+     *     200 = "Successful",
+     *     404 = "Not found"
+     *   }
+     * )
+     * @FOSRest\RequestParam(name="birth_date", requirements=@WikiBundle\Validator\Constraints\Date, nullable=false, description="User's birthday")
+     * @FOSRest\RequestParam(name="name", nullable=true, description="User's name")
+     * @FOSRest\RequestParam(name="lastname", nullable=true, description="User's lastname")
+     * @FOSRest\Patch("/profile")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function patchProfileAction(ParamFetcherInterface $paramFetcher)
+    {
+        $user = $this->getUser();
+
+        $user->setName(ucfirst($paramFetcher->get('name')));
+        $user->setLastname(ucfirst($paramFetcher->get('lastname')));
+        if($paramFetcher->get('birth_date') != null){
+            $birthDate = new \DateTime($paramFetcher->get('birth_date'));
+            $user->setBirthDate($birthDate);         
+        }
+        $validator = $this->get("validator");
+        $errors = $validator->validate($user);
+        if(count($errors) > 0){
+            return new JsonResponse($errors[0]->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
+        }
+        $userManager = $this->get("fos_user.user_manager");
+        $userManager->updateUser($user);
+        return $user;
+    }
+
 }

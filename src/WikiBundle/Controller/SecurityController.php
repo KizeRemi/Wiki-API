@@ -1,27 +1,22 @@
 <?php
 namespace WikiBundle\Controller;
 
-use WikiBundle\Entity\Revision;
-use WikiBundle\Entity\Page;
-use WikiBundle\Entity\Category;
+use WikiBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
-use FOS\RestBundle\Controller\Annotations\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 class SecurityController extends Controller implements ClassResourceInterface
 {
    /**
      * @ApiDoc(
-     *  section="Users",
+     *  section="Security",
      *  description="login and return a token user",
      *  resource = true,
      *  statusCodes = {
@@ -35,5 +30,32 @@ class SecurityController extends Controller implements ClassResourceInterface
      */  
     public function loginAction()
     {
+    }
+
+    /**
+     * @ApiDoc(
+     *  section="Security",
+     *  description="Set/unset a role admin to user",
+     *  resource = true,
+     *  statusCodes = {
+     *     200 = "Successful",
+     *     400 = "Bad request",
+     *     403 = "Access denied"
+     *   }
+     * )
+     * @FOSRest\Patch("/user/{user}/admin")
+     * @Security("has_role('ROLE_ADMIN')")
+     */  
+    public function toggleRoleAdminAction(User $user)
+    {
+        $user = $this->getUser();
+        $userManager = $this->get("fos_user.user_manager");
+        if($user->hasRole('ROLE_ADMIN')){
+            $user->removeRole('ROLE_ADMIN');
+        } else {
+            $user->addRole('ROLE_ADMIN');
+        }
+        $userManager->updateUser($user);
+        return $user;
     }
 }

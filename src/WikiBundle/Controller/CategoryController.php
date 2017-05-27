@@ -5,6 +5,7 @@ use WikiBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -22,9 +23,11 @@ class CategoryController extends Controller implements ClassResourceInterface
      *  resource = true,
      *  statusCodes = {
      *     200 = "Successful",
-     *     404 = "Page not found"
+     *     404 = "Page not found",
+     *     403 = "Denied access"
      *   }
      * )
+     * @Security("has_role('ROLE_USER')")
      */
     public function cgetAction()
     {
@@ -41,11 +44,13 @@ class CategoryController extends Controller implements ClassResourceInterface
      *  resource = true,
      *  statusCodes = {
      *     201 = "Created",
-     *     404 = "Category not found"
+     *     404 = "Category not found",
+     *     403 = "Denied Access"
      *   }
      * )
      * @RequestParam(name="name", nullable=false, description="Category's name")
      * @FOSRest\Post("/category")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function postAction(ParamFetcherInterface $paramFetcher)
     {
@@ -70,6 +75,7 @@ class CategoryController extends Controller implements ClassResourceInterface
      * )
      * @RequestParam(name="name", nullable=false, description="Category's name")
      * @FOSRest\Patch("/category/{category}")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function patchAction(ParamFetcherInterface $paramFetcher, Category $category)
     {
@@ -93,6 +99,7 @@ class CategoryController extends Controller implements ClassResourceInterface
      * )
      * @RequestParam(name="name", nullable=false, description="Category's name")
      * @FOSRest\Delete("/category/{category}")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Category $category)
     {

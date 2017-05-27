@@ -95,8 +95,8 @@ class PageController extends Controller implements ClassResourceInterface
      *  description="Create a new page",
      *  resource = true,
      *  statusCodes = {
-     *     201 = "Created",
-     *     400 = "Error"
+     *     201 = "Page created",
+     *     400 = "Bad request"
      *   }
      * )
      * @RequestParam(name="category", description="Category's page")
