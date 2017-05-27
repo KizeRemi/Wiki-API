@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -50,7 +50,7 @@ class UserController extends Controller implements ClassResourceInterface
      * @ParamConverter("user", class="WikiBundle:User")
      * @FOSRest\Get("/user/{user}")
      */
-    public function userAction(User $user)
+    public function getAction(User $user)
     {
         return $user;
     }

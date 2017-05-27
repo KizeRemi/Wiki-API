@@ -79,7 +79,9 @@ fos_user:
 
 fos_rest:
     param_fetcher_listener: true
-    body_listener: true
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.json
     disable_csrf_role: IS_AUTHENTICATED_ANONYMOUSLY
     #service:
     #    templating: ~
@@ -111,4 +113,17 @@ stof_doctrine_extensions:
             sluggable: true
 
 nelmio_api_doc:
-    name:                 'Wiki API'
+    sandbox:
+        accept_type:        'application/json'
+        body_format:
+            formats:        ['json']
+            default_format: 'json'
+        request_format:
+            formats:
+                json:       'application/json' 
+
+lexik_jwt_authentication:
+    private_key_path: %jwt_private_key_path%
+    public_key_path:  %jwt_public_key_path%
+    pass_phrase:      %jwt_key_pass_phrase%
+    token_ttl:        %jwt_token_ttl%

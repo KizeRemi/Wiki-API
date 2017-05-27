@@ -15,3 +15,7 @@ status:
 category:
     type:       rest
     resource:   WikiBundle\Controller\CategoryController
+
+security:
+    type:       rest
+    resource:   WikiBundle\Controller\SecurityController

@@ -3,7 +3,7 @@
 namespace WikiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * Page
  *
@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Page
 {
+    use TimestampableEntity;
     /**
      * @var int
      *
@@ -22,19 +23,15 @@ class Page
     private $id;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
+    * @ORM\ManyToOne(targetEntity="WikiBundle\Entity\Category")
+    * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+    */
+    protected $category;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\OneToMany(targetEntity="Revision", mappedBy="page", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $updatedAt;
-
+    private $revisions;
 
     /**
      * Get id
@@ -92,5 +89,71 @@ class Page
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \WikiBundle\Entity\Category $category
+     *
+     * @return Page
+     */
+    public function setCategory(\WikiBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \WikiBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add revision
+     *
+     * @param \WikiBundle\Entity\Revision $revision
+     *
+     * @return Page
+     */
+    public function addRevision(\WikiBundle\Entity\Revision $revision)
+    {
+        $revision->setPage($this);
+        $this->revisions[] = $revision;
+
+        return $this;
+    }
+
+    /**
+     * Remove revision
+     *
+     * @param \WikiBundle\Entity\Revision $revision
+     */
+    public function removeRevision(\WikiBundle\Entity\Revision $revision)
+    {
+        $this->revisions->removeElement($revision);
+    }
+
+    /**
+     * Get revisions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRevisions()
+    {
+        return $this->revisions;
     }
 }

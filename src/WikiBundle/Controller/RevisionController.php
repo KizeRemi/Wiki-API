@@ -134,6 +134,7 @@ class RevisionController extends Controller implements ClassResourceInterface
         $revision = new Revision();
 
         $revision->setPage($page);
+        $revision->setUser($this->getUser());
         $revision->setStatus($status);
         $revision->setTitle($paramFetcher->get('title'));
         $revision->setContent($paramFetcher->get('content'));

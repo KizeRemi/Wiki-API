@@ -12,10 +12,10 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 ## Fonctionnalités
 
 - [x] Inscription Utilisateur
-- [ ] Connexion/déconnexion
+- [x] Connexion/déconnexion
 - [ ] Gestion du profil
 - [ ] Gestion des rôles (anon, user, admin)
-- [ ] Gestion des pages
+- [x] Gestion des pages
 - [ ] Recherche
 
 ### Optionnel
@@ -25,7 +25,7 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 - [ ] Catégories
 
 * Roles
-  * ADMIN : Créer/Modifier/Suppriler
+  * ADMIN : Créer/Modifier/Supprimer
 -- USER : Créer/Modifier
 -- ANON : Lire
 -- Interface de saisie WYSIWYG
@@ -50,6 +50,22 @@ composer install
 
 ```
 Suivre la procédure de configuration pour la base de données. Enjoy !
+
+## Connexion utilisateur
+
+Pour créer un utilisateur, aller sur la route /user en POST avec en paramètre:
+- username
+- password
+- password_confirmation
+- email
+
+Puis pour se log, aller sur le route /login_check en POST avec en paramètre:
+- _username
+- _password
+
+L'api renvoit un token de connexion, nécessaire pour accéder à toutes les URL de l'api.
+Il faut donc envoyer dans le header:
+Authorization => Bearer montokenutilisateur
 
 
 Modèle
@@ -151,3 +167,5 @@ FRONT
 
 ### /page/{slug}/history
 * utilisateurs ayant contribués
+
+

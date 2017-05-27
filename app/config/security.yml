@@ -1,36 +1,35 @@
 
 security:
-   encoders:
-       FOS\UserBundle\Model\UserInterface: sha512
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
 
-   role_hierarchy:
-       ROLE_ADMIN:       ROLE_USER
-       ROLE_SUPER_ADMIN: ROLE_ADMIN
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
 
-   providers:
-       fos_userbundle:
-           id: fos_user.user_provider.username
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
-   firewalls:
-       main:
-           pattern: ^/
-           form_login:
-               check_path: /login_check
-               login_path: /login
-               provider: fos_userbundle
-           logout:
-               path:    /logout
-               target: /
-              # provider: fos_userbundle
-              # csrf_provider: form.csrf_provider
+    firewalls:
 
-           anonymous:    true
-           remember_me:
-                secret:   '%secret%'
-                lifetime: 604800 # 1 week in seconds
-                path:     /
+        login:
+            pattern:  ^/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
 
-   access_control:
-       - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-       - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY  }
-       - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        api:
+            pattern:   ^/
+            stateless: true
+            anonymous: true
+            lexik_jwt: ~
+
+    access_control:
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

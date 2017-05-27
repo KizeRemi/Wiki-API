@@ -19,6 +19,5 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 					    ->setParameter('page', $page)
 					    ->getQuery();
 		return $query->getSingleResult();
-
 	}
 }

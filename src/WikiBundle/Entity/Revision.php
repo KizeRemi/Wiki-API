@@ -34,7 +34,7 @@ class Revision
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="content", type="string", length=255)
      */
     private $content;
 
@@ -51,7 +51,7 @@ class Revision
     protected $user;
 
     /**
-    * @ORM\ManyToOne(targetEntity="WikiBundle\Entity\Page")
+    * @ORM\ManyToOne(targetEntity="WikiBundle\Entity\Page", inversedBy="revisions")
     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
     */
     protected $page;
@@ -127,7 +127,7 @@ class Revision
      *
      * @return Revision
      */
-    public function setPage(\WikiBundle\Entity\Page $page = null)
+    public function setPage(\WikiBundle\Entity\Page $page)
     {
         $this->page = $page;
 

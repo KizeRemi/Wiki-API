@@ -23,7 +23,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  */
 class User extends BaseUser
 {
-
+    const ROLE_USER = "ROLE_USER";
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -34,6 +34,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+        $this->roles = array(static::ROLE_USER);
+        $this->enabled = 1;
     }
 }
