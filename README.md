@@ -13,25 +13,16 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 
 - [x] Inscription Utilisateur
 - [x] Connexion/déconnexion
-- [ ] Gestion du profil
-- [ ] Gestion des rôles (anon, user, admin)
+- [x] Gestion du profil
+- [x] Gestion des rôles (anon, user, admin)
 - [x] Gestion des pages
 - [ ] Recherche
 
 ### Optionnel
 - [ ] Upload d'images
-- [ ] Système de badge
+- [ ] Système d'experience
 - [ ] Commentaires
-- [ ] Catégories
-
-* Roles
-  * ADMIN : Créer/Modifier/Supprimer
--- USER : Créer/Modifier
--- ANON : Lire
--- Interface de saisie WYSIWYG
-- Historique des modifications
-- Recherche de page
-- Page profil
+- [x] Catégories
 
 ## Installation
 
@@ -143,29 +134,4 @@ Routing API
     * GET    /{id}
     * PUT    /{id}
     * DELETE /{id}
-
-FRONT
-=====
-### Toutes les pages
-*
-*
-*
-
-### /
-*Derniers articles
-*Meilleurs notes
-*Page {home}
-*Champs de recherche
-
-### /search
-*résultats de la recherche
-
-### /page/{slug}
-* title, content (la dernière revision online)
-* ratinf (de la révision en cours)
-* date de la révision
-
-### /page/{slug}/history
-* utilisateurs ayant contribués
-
 
