@@ -58,80 +58,9 @@ L'api renvoit un token de connexion, nécessaire pour accéder à toutes les URL
 Il faut donc envoyer dans le header:
 Authorization => Bearer montokenutilisateur
 
+## Documentation
 
-Modèle
-======
+Toutes les routes sont disponibles ici :
+www.wiki.remi-mavillaz.fr/api/doc
 
-## User
-* id
-* email
-* password
-* pseudonyme
-* roles
-* created_at
-
-## Experience
-* user_id
-* exp
-
-## Page
-* id
-* created_at
-* updated_at
-
-## Revision
-* page_id
-* status: online|pending_validation|canceled|draft
-* title
-* content
-* updated_by
-* updated_at
-* created_at
-
-## Rating
-* id
-* revision_id
-* rating
-* user_id
-* created_at
-* updated_at
-
-## Categorie
-
-Routing API
-===========
-/api/v1/
-## User
-  * /user
-    * POST   /
-    * GET    /{id}
-    * PUT    /{id}
-    * DELETE /{id}
-    * POST   /login
-    * GET    /logout
-
-## Page
-  * /page
-    * POST   /
-    * GET    /{slug}
-    * PUT    /{slug}
-    * DELETE /{slug}
-    * GET    /last?limit=10&offset=0
-    * GET    /best_rated?limit=10&offset=0
-    * GET    /search?q=query&limit=10&offset=0
-
-## PageRevision
-  * /page/{page_slug}/revision
-    * POST   /
-    * GET    /
-    * PUT    /{id}
-    * DELETE /{id}
-    * GET    /
-
-## Rating
-  * /page/{page_slug}/revision/{revision_id}/rate
-    * POST   /
-    * GET    /{id}
-    * PUT    /{id}
-    * DELETE /{id}
-
+**L'API EST EN LIGNE**

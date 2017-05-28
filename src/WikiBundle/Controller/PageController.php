@@ -4,18 +4,21 @@ namespace WikiBundle\Controller;
 use WikiBundle\Entity\Revision;
 use WikiBundle\Entity\Page;
 use WikiBundle\Entity\Category;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Controller\Annotations\Route;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 class PageController extends Controller implements ClassResourceInterface
 {
@@ -65,7 +68,7 @@ class PageController extends Controller implements ClassResourceInterface
      *      {
      *          "name"="category",
      *          "dataType"="Category",
-     *          "description"=""
+     *          "description"="The category for which you want the pages"
      *      }
      *   },
      *   resource = true,
@@ -103,6 +106,7 @@ class PageController extends Controller implements ClassResourceInterface
      * @RequestParam(name="title", nullable=false, description="Revision's title")
      * @RequestParam(name="content", nullable=false, description="Revision's content")
      * @FOSRest\Post("/page")
+     * @Security("has_role('ROLE_USER')")
      */    
     public function postAction(ParamFetcherInterface $paramFetcher)
     {
@@ -141,6 +145,7 @@ class PageController extends Controller implements ClassResourceInterface
      * )
      * @ParamConverter("page", class="WikiBundle:Page")
      * @FOSRest\Delete("/page/{page}")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Page $page)
     {

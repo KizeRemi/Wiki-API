@@ -7,13 +7,14 @@ use WikiBundle\Entity\Status;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Controller\Annotations\Route;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class RevisionController extends Controller implements ClassResourceInterface
@@ -109,12 +110,12 @@ class RevisionController extends Controller implements ClassResourceInterface
     /**
      * @ApiDoc(
      *  section="Revisions",
-     *  description="create a revision for a page",
+     *  description="Create a revision for a page",
      *  requirements={
      *      {
      *          "name"="page",
      *          "dataType"="Page",
-     *          "description"="Create a revision for a page"
+     *          "description"="The page for which you want te create a revision"
      *      }
      *  },
      *  resource = true,
@@ -126,15 +127,21 @@ class RevisionController extends Controller implements ClassResourceInterface
      * @RequestParam(name="title", nullable=false, description="Revision's title")
      * @RequestParam(name="content", nullable=false, description="Revision's content")
      * @FOSRest\Post("/page/{page}/revision")
+     * @Security("has_role('ROLE_USER')")
      */
     public function postAction(ParamFetcherInterface $paramFetcher, Page $page)
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
         $status = $this->getDoctrine()->getRepository('WikiBundle:Status')->find(2);
         $revision = new Revision();
-
+        $hasPendingRevision = $this->getDoctrine()->getRepository('WikiBundle:Revision')->hasAlreadyPendingRevisionByPage($page, $user);
+        if($hasPendingRevision){
+            $resp = array("message" => "Vous avez déjà une révision en attente de validation pour cette page.");
+            return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);            
+        }
         $revision->setPage($page);
-        $revision->setUser($this->getUser());
+        $revision->setUser($user);
         $revision->setStatus($status);
         $revision->setTitle($paramFetcher->get('title'));
         $revision->setContent($paramFetcher->get('content'));
