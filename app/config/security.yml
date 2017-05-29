@@ -17,12 +17,14 @@ security:
             pattern:  ^/login
             stateless: true
             anonymous: true
+            provider:   fos_userbundle
             form_login:
                 check_path:               /login_check
+                username_parameter:       _username
+                password_parameter:       _password
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
-
         api:
             pattern:   ^/
             stateless: true

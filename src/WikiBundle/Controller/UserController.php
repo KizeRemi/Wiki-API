@@ -90,7 +90,8 @@ class UserController extends Controller implements ClassResourceInterface
         $validator = $this->get("validator");
         $errors = $validator->validate($user);
         if(count($errors) > 0){
-            return new JsonResponse($errors[0]->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
+            $resp = array("message" => $errors[0]->getMessage());
+            return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);
         } 
 
         $userManager->updateUser($user);
