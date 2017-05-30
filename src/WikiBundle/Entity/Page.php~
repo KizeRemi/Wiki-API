@@ -165,28 +165,4 @@ class Page
     {
         return $this->revisions;
     }
-
-    /**
-     * Set viewCount
-     *
-     * @param integer $viewCount
-     *
-     * @return Page
-     */
-    public function setViewCount($viewCount)
-    {
-        $this->viewCount = $viewCount;
-
-        return $this;
-    }
-
-    /**
-     * Get viewCount
-     *
-     * @return integer
-     */
-    public function getViewCount()
-    {
-        return $this->viewCount;
-    }
 }

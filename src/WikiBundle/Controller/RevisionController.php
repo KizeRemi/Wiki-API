@@ -12,10 +12,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 
 class RevisionController extends Controller implements ClassResourceInterface
 { 
@@ -59,10 +61,11 @@ class RevisionController extends Controller implements ClassResourceInterface
 
      * @Route(requirements={"revision"="\d+"})
      * @ParamConverter("revision", class="WikiBundle:Revision")
-     * @FOSRest\Get("/page/{page}/revision/{revision}", requirements={"revision" = "\d+"},)
+     * @FOSRest\Get("/revision/{revision}", requirements={"revision" = "\d+"},)
      */
-    public function getAction(Page $page, Revision $revision)
+    public function getAction(Revision $revision)
     {
+        $this->get('wiki.counter.counter_view')->addView($revision->getPage());
         return $revision;
     }
 
@@ -88,6 +91,32 @@ class RevisionController extends Controller implements ClassResourceInterface
 
     /**
      * @ApiDoc(
+     *   section="Revisions",
+     *   description="Search revisions",
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Successful",
+     *     404 = "Not found"
+     *   }
+     * )
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index of beginning of pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Number of pages to display")
+     * @QueryParam(name="search", default="", description="words")
+     * @FOSRest\GET("/search")
+     */
+    public function cgetCategoryAction(ParamFetcherInterface $paramFetcher)
+    {
+
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $search = $paramFetcher->get('search');
+        $em = $this->getDoctrine()->getManager();
+        $revisions = $em->getRepository('WikiBundle:Revision')->searchRevisionsWithOffsetAndLimit($search, $offset, $limit);
+        return $revisions;
+    }
+
+    /**
+     * @ApiDoc(
      *  section="Revisions",
      *  description="Get all revisions by page and status",
      *  resource = true,
@@ -98,7 +127,7 @@ class RevisionController extends Controller implements ClassResourceInterface
      * )
      * @ParamConverter("page", class="WikiBundle:Page")
      * @ParamConverter("status", class="WikiBundle:Status")
-     * @FOSRest\Get("/page/{page}/status/{status}/revisions")
+     * @FOSRest\Get("/page/{page}/revisions/status/{status}")
      */
     public function cgetStatusAction(Page $page, Status $status)
     {
@@ -135,7 +164,7 @@ class RevisionController extends Controller implements ClassResourceInterface
         $user = $this->getUser();
         $status = $this->getDoctrine()->getRepository('WikiBundle:Status')->find(2);
         $revision = new Revision();
-        $hasPendingRevision = $this->getDoctrine()->getRepository('WikiBundle:Revision')->hasAlreadyPendingRevisionByPage($page, $user);
+        $hasPendingRevision = $em->getRepository('WikiBundle:Revision')->hasAlreadyPendingRevisionByPage($page, $user);
         if($hasPendingRevision){
             $resp = array("message" => "Vous avez déjà une révision en attente de validation pour cette page.");
             return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);            
@@ -163,9 +192,9 @@ class RevisionController extends Controller implements ClassResourceInterface
      *     404 = "Not found"
      *   }
      * )
-     * @FOSRest\Patch("/page/{page}/revision/{revision}/status/{status}")
+     * @FOSRest\Patch("/revision/{revision}/status/{status}")
      */
-    public function patchStatusAction(Page $page, Revision $revision, Status $status)
+    public function patchStatusAction(Revision $revision, Status $status)
     {
         $em = $this->getDoctrine()->getManager();
         if($status->getId() == 2){
@@ -194,11 +223,16 @@ class RevisionController extends Controller implements ClassResourceInterface
      *     404 = "Not found"
      *   }
      * )
-     * @FOSRest\Delete("/page/{page}/revision/{revision}")
+     * @FOSRest\Delete("/revision/{revision}")
      */
-    public function deleteAction(Page $page, Revision $revision)
+    public function deleteAction(Revision $revision)
     {
         $em = $this->getDoctrine()->getManager();
+        $countRevisions = $em->getRepository('WikiBundle:Revision')->countRevisionsByPage($revision->getPage());
+        if($countRevisions == 1){
+            $resp = array("message" => "Suppression impossible. Une page doit comporter au moins 1 révision.");
+            return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);            
+        }
         $em->remove($revision);
         $em->flush($revision);
 

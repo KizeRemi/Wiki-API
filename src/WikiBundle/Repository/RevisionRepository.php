@@ -20,6 +20,7 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 					    ->getQuery();
 		return $query->getSingleResult();
 	}
+
 	public function hasAlreadyPendingRevisionByPage($page, $user){
 		$query = $this  ->createQueryBuilder('r')
 						->where('r.page = :page')
@@ -29,4 +30,30 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 					    ->getQuery();
 		return $query->getOneOrNullResult();
 	}
+
+	public function searchRevisionsWithOffsetAndLimit($search, $offset, $limit){
+        $query = $this->createQueryBuilder('r')
+                      ->where("r.title LIKE :search")
+                      ->orWhere("r.content LIKE :search")
+                      ->andWhere('r.status = 1')
+                      ->orderBy('r.id', 'ASC')
+                      ->setParameter('search', '%'.$search.'%');
+        if ($offset != "") {
+            $query->setFirstResult($offset);
+        }
+        if ($limit != "") {
+            $query->setMaxResults($limit);
+        }
+        return $query->getQuery()->getResult();
+	}
+
+	public function countRevisionsByPage($page){
+		$query = $this->createQueryBuilder('l')
+                        ->select('COUNT(l)')
+                        ->where('l.page = :page')
+                        ->setParameter('page', $page);
+                        
+        return $query->getQuery()->getSingleScalarResult();
+	}
+
 }
