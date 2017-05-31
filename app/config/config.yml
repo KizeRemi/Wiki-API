@@ -80,9 +80,7 @@ fos_user:
 
 fos_rest:
     param_fetcher_listener: true
-    body_listener:
-        decoders:
-            json: fos_rest.decoder.json
+    body_listener: true
     disable_csrf_role: IS_AUTHENTICATED_ANONYMOUSLY
     #service:
     #    templating: ~
