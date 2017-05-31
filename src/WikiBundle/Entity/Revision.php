@@ -64,6 +64,13 @@ class Revision
     protected $status;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="main_image", type="string", length=255)
+     */
+    private $mainImage;
+
+    /**
      * Get id
      *
      * @return int
@@ -215,5 +222,34 @@ class Revision
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set main image
+     *
+     * @param string $mainImage
+     *
+     * @return Revision
+     */
+    public function setMainImage($mainImage)
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * Get main image
+     *
+     * @return string
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    public function clearId() {
+        $this->id = null;
+        return $this;
     }
 }

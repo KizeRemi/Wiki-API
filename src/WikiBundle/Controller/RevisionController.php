@@ -21,7 +21,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 
 class RevisionController extends Controller implements ClassResourceInterface
-{ 
+{
     /**
      * @ApiDoc(
      *  section="Revisions",
