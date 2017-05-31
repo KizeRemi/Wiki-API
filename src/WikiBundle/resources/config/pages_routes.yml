@@ -19,6 +19,10 @@ category:
     type:       rest
     resource:   WikiBundle\Controller\CategoryController
 
+comment:
+    type:       rest
+    resource:   WikiBundle\Controller\CommentController
+
 security:
     type:       rest
     resource:   WikiBundle\Controller\SecurityController

@@ -19,3 +19,6 @@ services:
     wiki.rating_manager:
         class: WikiBundle\Rating\RatingManager
         arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+    wiki.file_uploader:
+        class: WikiBundle\Service\FileUploader
+        arguments: ['%upload_path_banner%']

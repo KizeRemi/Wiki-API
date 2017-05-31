@@ -15,13 +15,13 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 - [x] Gestion du profil
 - [x] Gestion des rôles (anon, user, admin)
 - [x] Gestion des pages
-- [ ] Recherche
-- [ ] Rating
+- [x] Recherche
+- [x] Rating
 
 ### Optionnel
-- [ ] Upload d'images
+- [x] Upload d'images
 - [ ] Système d'experience
-- [ ] Commentaires
+- [x] Commentaires
 - [x] Catégories
 
 ## Installation
