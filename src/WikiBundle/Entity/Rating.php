@@ -3,6 +3,7 @@
 namespace WikiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Rating
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Rating
 {
+    use TimestampableEntity;
     /**
      * @var int
      *
@@ -27,20 +29,6 @@ class Rating
      * @ORM\Column(name="rating", type="integer")
      */
     private $rating;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
 
     /**
     * @ORM\ManyToOne(targetEntity="WikiBundle\Entity\User")

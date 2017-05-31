@@ -16,3 +16,6 @@ services:
     wiki.counter.counter_view:
         class: WikiBundle\Counter\CounterViewPage
         arguments: ['@doctrine.orm.entity_manager', '@request_stack']
+    wiki.rating_manager:
+        class: WikiBundle\Rating\RatingManager
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']

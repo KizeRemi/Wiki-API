@@ -115,7 +115,7 @@ class PageController extends Controller implements ClassResourceInterface
         $categoryId = $paramFetcher->get('category');
         $category = $em->getRepository('WikiBundle:Category')->find($categoryId);
         if(!$category){
-            $resp = "Cette catégorie n'existe pas.";
+            $resp = array("message" => "Cette catégorie n'existe pas.");
             return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);
         }
         $status = $this->getDoctrine()->getRepository('WikiBundle:Status')->find(2);

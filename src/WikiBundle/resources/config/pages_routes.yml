@@ -11,6 +11,9 @@ status:
     type:       rest
     resource:   WikiBundle\Controller\StatusController
 
+rating:
+    type:       rest
+    resource:   WikiBundle\Controller\RatingController
 
 category:
     type:       rest
