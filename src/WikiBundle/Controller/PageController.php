@@ -135,7 +135,7 @@ class PageController extends Controller implements ClassResourceInterface
     /**
      *
      * @ApiDoc(
-     *  section="Revisions",
+     *  section="Pages",
      *  description="Delete a page and all his revisions",
      *  resource = true,
      *  statusCodes = {

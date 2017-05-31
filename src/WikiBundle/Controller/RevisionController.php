@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -63,8 +64,9 @@ class RevisionController extends Controller implements ClassResourceInterface
      * @ParamConverter("revision", class="WikiBundle:Revision")
      * @FOSRest\Get("/revision/{revision}", requirements={"revision" = "\d+"},)
      */
-    public function getAction(Revision $revision)
+    public function getAction(Request $request, Revision $revision)
     {
+
         $this->get('wiki.counter.counter_view')->addView($revision->getPage());
         return $revision;
     }

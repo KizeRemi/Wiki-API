@@ -128,6 +128,7 @@ class Page
      */
     public function __construct()
     {
+        $this->viewCount = 0;
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

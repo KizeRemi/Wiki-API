@@ -15,4 +15,4 @@ services:
 
     wiki.counter.counter_view:
         class: WikiBundle\Counter\CounterViewPage
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
