@@ -18,7 +18,7 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 					    ->setMaxResults(1)
 					    ->setParameter('page', $page)
 					    ->getQuery();
-		return $query->getSingleResult();
+		return $query->getOneOrNullResult();
 	}
 
 	public function hasAlreadyPendingRevisionByPage($page, $user){
@@ -48,12 +48,15 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function countRevisionsByPage($page){
-		$query = $this->createQueryBuilder('l')
-                        ->select('COUNT(l)')
-                        ->where('l.page = :page')
+		$query = $this->createQueryBuilder('r')
+                        ->select('COUNT(r)')
+                        ->where('r.page = :page')
                         ->setParameter('page', $page);
                         
         return $query->getQuery()->getSingleScalarResult();
 	}
 
+	public function getTopContributors(){
+        $query = $this->createQueryBuilder('r');
+	}
 }

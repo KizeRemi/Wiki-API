@@ -93,6 +93,7 @@ class CommentController extends Controller implements ClassResourceInterface
      * )
      * @FOSRest\Delete("/comment/{comment}")
      * @ParamConverter("comment", class="WikiBundle:Comment")
+     * @Security("has_role('ROLE_USER')")
      */    
     public function deleteAction(ParamFetcherInterface $paramFetcher, Comment $comment)
     {

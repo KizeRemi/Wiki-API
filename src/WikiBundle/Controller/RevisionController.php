@@ -19,7 +19,6 @@ use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-
 class RevisionController extends Controller implements ClassResourceInterface
 {
     /**

@@ -26,3 +26,7 @@ comment:
 security:
     type:       rest
     resource:   WikiBundle\Controller\SecurityController
+
+statistic:
+    type:       rest
+    resource:   WikiBundle\Controller\StatisticController

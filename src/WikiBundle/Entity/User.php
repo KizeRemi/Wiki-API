@@ -9,9 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+
 /**
- * @ORM\Entity()
  * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="WikiBundle\Repository\UserRepository")
  * @UniqueEntity(
  *     fields={"email"},
  *     message="Cet email est déjà utilisé.",
