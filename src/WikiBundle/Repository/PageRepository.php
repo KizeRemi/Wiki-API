@@ -23,4 +23,14 @@ class PageRepository extends \Doctrine\ORM\EntityRepository
         }
         return $query->getQuery()->getResult();
 	}
+
+  public function getTopPages(){
+    $query = $this->createQueryBuilder('p')
+                      ->select('p.id as page_id, p.viewCount, MAX(r.id) as rev_id, r.title')
+                      ->innerJoin('p.revisions', 'r')
+                      ->groupBy('p.id')
+                      ->orderBy('p.viewCount', 'DESC')
+                      ->setMaxResults(10);
+        return $query->getQuery()->getArrayResult();
+  }
 }

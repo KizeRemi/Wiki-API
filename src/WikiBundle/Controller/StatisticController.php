@@ -33,4 +33,23 @@ class StatisticController extends Controller implements ClassResourceInterface
         $result = $em->getRepository('WikiBundle:Revision')->getTopContributors();
         return $result;
     }
+
+   /**
+     * @ApiDoc(
+     *  section="Statistics",
+     *  description="Return top 10 pages",
+     *  resource = true,
+     *  statusCodes = {
+     *     200 = "Return top 10 pages by counter view.",
+     *     404 = "Not found"
+     *   }
+     * )
+     * @FOSRest\Get("/statistic/pages/top")
+     */  
+    public function getTopPagesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->getRepository('WikiBundle:Page')->getTopPages();
+        return $result;
+    }
 }
