@@ -30,3 +30,7 @@ security:
 statistic:
     type:       rest
     resource:   WikiBundle\Controller\StatisticController
+
+image:
+    type:       rest
+    resource:   WikiBundle\Controller\ContentImageController
