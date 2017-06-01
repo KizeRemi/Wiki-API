@@ -1,6 +1,7 @@
 <?php
 
 namespace WikiBundle\Repository;
+use WikiBundle\Entity\Revision;
 
 /**
  * PageRevisionRepository
@@ -18,7 +19,7 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 					    ->setMaxResults(1)
 					    ->setParameter('page', $page)
 					    ->getQuery();
-		return $query->getOneOrNullResult();
+		return $query->getSingleResult();
 	}
 
 	public function hasAlreadyPendingRevisionByPage($page, $user){
@@ -57,6 +58,12 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function getTopContributors(){
-        $query = $this->createQueryBuilder('r');
+		$query = $this->createQueryBuilder('r')
+                      ->select('u.id, u.username, COUNT(r.id) as nbr_revision')
+                      ->innerJoin('r.user', 'u')
+                      ->groupBy('r.user')
+                      ->orderBy('nbr_revision', 'DESC')
+                      ->setMaxResults(10);
+        return $query->getQuery()->getArrayResult();
 	}
 }

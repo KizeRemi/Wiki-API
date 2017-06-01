@@ -26,37 +26,6 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class PageController extends Controller implements ClassResourceInterface
 {
-    // /**
-    //  * @ApiDoc(
-    //  *  section="Pages",
-    //  *  description="Import image",
-    //  *  resource = true,
-    //  *  statusCodes = {
-    //  *     200 = "Successful",
-    //  *     404 = "Not found"
-    //  *   }
-    //  * )
-    //  * @ParamConverter("page", class="WikiBundle:Page")
-    //  * @FOSRest\Post("/page/{page}/mainImage")
-    //  * @FOSRest\FileParam(name="image", nullable=true, description="Image")
-    //  */
-    // public function importImageAction (ParamFetcherInterface $paramFetcher, Page $page) {
-    //     $file = $paramFetcher->get('image');
-    //     $em = $this->getDoctrine()->getManager();
-    //     $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
-    //     $newRevision = clone $revision;
-    //     $newRevision->clearId();
-
-    //     $fileUploader = $this->get('wiki.file_uploader');
-    //     $fileName = $fileUploader->upload($file);
-    //     $newRevision->setMainImage($fileName);
-
-    //     $em->persist($newRevision);
-    //     $em->flush();
-
-    //     return $newRevision;
-    // }
-
     /**
      * @ApiDoc(
      *  section="Pages",

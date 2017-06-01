@@ -32,7 +32,6 @@ class RequestListener implements EventSubscriberInterface
 
     public function onKernelResponse(FilterResponseEvent $event)
     {        
-        // Don't do anything if it's not the master request.
         if (!$event->isMasterRequest()) {
             return;
         }

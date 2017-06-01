@@ -29,7 +29,8 @@ class StatisticController extends Controller implements ClassResourceInterface
      */  
     public function getTopContributorsAction()
     {
-        $this->getDoctrine->getManager();
-        return "";
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->getRepository('WikiBundle:Revision')->getTopContributors();
+        return $result;
     }
 }
