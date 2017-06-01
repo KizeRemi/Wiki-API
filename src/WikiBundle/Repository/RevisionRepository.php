@@ -22,6 +22,15 @@ class RevisionRepository extends \Doctrine\ORM\EntityRepository
 		return $query->getSingleResult();
 	}
 
+	public function getLatestOnlineRevision(){
+		$query = $this  ->createQueryBuilder('r')
+						->andWhere('r.status = 1')
+					    ->orderBy('r.id', 'DESC')
+					    ->setMaxResults(10)
+					    ->getQuery();
+		return $query->getResult();
+	}
+
 	public function hasAlreadyPendingRevisionByPage($page, $user){
 		$query = $this  ->createQueryBuilder('r')
 						->where('r.page = :page')

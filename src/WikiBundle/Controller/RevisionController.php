@@ -83,10 +83,29 @@ class RevisionController extends Controller implements ClassResourceInterface
      * @ParamConverter("page", class="WikiBundle:Page")
      * @FOSRest\Get("/page/{page}/revision/latest")
      */
-    public function getLatestAction(Page $page)
+    public function getLatestPageAction(Page $page)
     {
         $em = $this->getDoctrine()->getManager();
         $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
+        return $revision;
+    }
+
+    /**
+     * @ApiDoc(
+     *  section="Revisions",
+     *  description="Get 10 latest revisions",
+     *  resource = true,
+     *  statusCodes = {
+     *     201 = "Successful",
+     *     400 = "Not found"
+     *   }
+     * )
+     * @FOSRest\Get("/revisions/latest")
+     */
+    public function getLatestAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevision();
         return $revision;
     }
 
