@@ -26,36 +26,36 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class PageController extends Controller implements ClassResourceInterface
 {
-    /**
-     * @ApiDoc(
-     *  section="Pages",
-     *  description="Import image",
-     *  resource = true,
-     *  statusCodes = {
-     *     200 = "Successful",
-     *     404 = "Not found"
-     *   }
-     * )
-     * @ParamConverter("page", class="WikiBundle:Page")
-     * @FOSRest\Post("/page/{page}/mainImage")
-     * @FOSRest\FileParam(name="image", nullable=true, description="Image")
-     */
-    public function importImageAction (ParamFetcherInterface $paramFetcher, Page $page) {
-        $file = $paramFetcher->get('image');
-        $em = $this->getDoctrine()->getManager();
-        $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
-        $newRevision = clone $revision;
-        $newRevision->clearId();
+    // /**
+    //  * @ApiDoc(
+    //  *  section="Pages",
+    //  *  description="Import image",
+    //  *  resource = true,
+    //  *  statusCodes = {
+    //  *     200 = "Successful",
+    //  *     404 = "Not found"
+    //  *   }
+    //  * )
+    //  * @ParamConverter("page", class="WikiBundle:Page")
+    //  * @FOSRest\Post("/page/{page}/mainImage")
+    //  * @FOSRest\FileParam(name="image", nullable=true, description="Image")
+    //  */
+    // public function importImageAction (ParamFetcherInterface $paramFetcher, Page $page) {
+    //     $file = $paramFetcher->get('image');
+    //     $em = $this->getDoctrine()->getManager();
+    //     $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
+    //     $newRevision = clone $revision;
+    //     $newRevision->clearId();
 
-        $fileUploader = $this->get('wiki.file_uploader');
-        $fileName = $fileUploader->upload($file);
-        $newRevision->setMainImage($fileName);
+    //     $fileUploader = $this->get('wiki.file_uploader');
+    //     $fileName = $fileUploader->upload($file);
+    //     $newRevision->setMainImage($fileName);
 
-        $em->persist($newRevision);
-        $em->flush();
+    //     $em->persist($newRevision);
+    //     $em->flush();
 
-        return $newRevision;
-    }
+    //     return $newRevision;
+    // }
 
     /**
      * @ApiDoc(
@@ -140,30 +140,41 @@ class PageController extends Controller implements ClassResourceInterface
      * @RequestParam(name="category", description="Category's page")
      * @RequestParam(name="title", nullable=false, description="Revision's title")
      * @RequestParam(name="content", nullable=false, description="Revision's content")
+     * @FOSRest\FileParam(name="image", nullable=true, description="Image")
      * @FOSRest\Post("/page")
      * @Security("has_role('ROLE_USER')")
-     */    
+     */
     public function postAction(ParamFetcherInterface $paramFetcher)
     {
         $em = $this->get('doctrine.orm.entity_manager');
         $page = new Page();
         $categoryId = $paramFetcher->get('category');
         $category = $em->getRepository('WikiBundle:Category')->find($categoryId);
-        if(!$category){
+        if(! $category){
             $resp = array("message" => "Cette catégorie n'existe pas.");
             return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);
         }
         $status = $this->getDoctrine()->getRepository('WikiBundle:Status')->find(2);
+
         $revision = new Revision();
         $revision->setUser($this->getUser());
         $revision->setStatus($status);
         $revision->setTitle($paramFetcher->get('title'));
         $revision->setContent($paramFetcher->get('content'));
+
+        if ($file = $paramFetcher->get('image')) {
+            $fileUploader = $this->get('wiki.file_uploader');
+            $fileName = $fileUploader->upload($file);
+            $revision->setMainImage($fileName);
+        } else {
+            $revision->setMainImage('');
+        }
+
         $page->addRevision($revision);
         $page->setCategory($category);
         $em->persist($page);
         $em->flush($page);
-
+        
         return $page;
     }
 

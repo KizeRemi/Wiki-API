@@ -156,6 +156,7 @@ class RevisionController extends Controller implements ClassResourceInterface
      * )
      * @RequestParam(name="title", nullable=false, description="Revision's title")
      * @RequestParam(name="content", nullable=false, description="Revision's content")
+     * @FOSRest\FileParam(name="image", nullable=true, description="Image")
      * @FOSRest\Post("/page/{page}/revision")
      * @Security("has_role('ROLE_USER')")
      */
@@ -175,6 +176,14 @@ class RevisionController extends Controller implements ClassResourceInterface
         $revision->setStatus($status);
         $revision->setTitle($paramFetcher->get('title'));
         $revision->setContent($paramFetcher->get('content'));
+
+        if ($file = $paramFetcher->get('image')) {
+            $fileUploader = $this->get('wiki.file_uploader');
+            $fileName = $fileUploader->upload($file);
+            $revision->setMainImage($fileName);
+        } else {
+            $revision->setMainImage('');
+        }
 
         $em->persist($revision);
         $em->flush();
