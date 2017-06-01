@@ -97,7 +97,6 @@ class CategoryController extends Controller implements ClassResourceInterface
      *     404 = "Category not found"
      *   }
      * )
-     * @RequestParam(name="name", nullable=false, description="Category's name")
      * @FOSRest\Delete("/category/{category}")
      * @Security("has_role('ROLE_ADMIN')")
      */
