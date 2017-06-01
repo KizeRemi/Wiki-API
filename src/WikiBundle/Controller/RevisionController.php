@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -196,12 +197,21 @@ class RevisionController extends Controller implements ClassResourceInterface
         $revision->setTitle($paramFetcher->get('title'));
         $revision->setContent($paramFetcher->get('content'));
 
+        $lastRev = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
+
         if ($file = $paramFetcher->get('image')) {
             $fileUploader = $this->get('wiki.file_uploader');
             $fileName = $fileUploader->upload($file);
             $revision->setMainImage($fileName);
         } else {
-            $revision->setMainImage('');
+            if (isset($lastRev)) {
+                $lastRevImage = $lastRev->getMainImage();
+                if (isset($lastRevImage)) {
+                    $revision->setMainImage($lastRev->getMainImage());
+                }
+            } else {
+                $revision->setMainImage(null);
+            }
         }
 
         $em->persist($revision);
@@ -257,13 +267,28 @@ class RevisionController extends Controller implements ClassResourceInterface
     public function deleteAction(Revision $revision)
     {
         $em = $this->getDoctrine()->getManager();
+
         $countRevisions = $em->getRepository('WikiBundle:Revision')->countRevisionsByPage($revision->getPage());
-        if($countRevisions == 1){
+        if ($countRevisions == 1) {
             $resp = array("message" => "Suppression impossible. Une page doit comporter au moins 1 révision.");
             return new JsonResponse($resp, JsonResponse::HTTP_BAD_REQUEST);            
         }
+
+        $page = $revision->getPage();
+        $mainImage = $revision->getMainImage();
+
         $em->remove($revision);
         $em->flush($revision);
+
+        if (isset($mainImage)) {
+            $lastRev = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
+            $lastRevImage = $lastRev->getMainImage();
+
+            if (isset($lastRevImage) && $lastRevImage != $mainImage) {
+                $fs = new Filesystem();
+                $fs->remove(array($this->getParameter('upload_path_banner') . '/' . $mainImage));
+            }
+        }
 
         return new JsonResponse(null, JsonResponse::HTTP_OK);
     }

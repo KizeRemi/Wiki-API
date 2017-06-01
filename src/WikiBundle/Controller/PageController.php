@@ -4,6 +4,7 @@ namespace WikiBundle\Controller;
 use WikiBundle\Entity\Revision;
 use WikiBundle\Entity\Page;
 use WikiBundle\Entity\Category;
+use WikiBundle\Entity\ContentImage;
 use WikiBundle\Service\FileUploader;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,6 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -20,9 +24,6 @@ use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 class PageController extends Controller implements ClassResourceInterface
 {
@@ -110,6 +111,7 @@ class PageController extends Controller implements ClassResourceInterface
      * @RequestParam(name="title", nullable=false, description="Revision's title")
      * @RequestParam(name="content", nullable=false, description="Revision's content")
      * @FOSRest\FileParam(name="image", nullable=true, description="Image")
+     * @FOSRest\FileParam(name="content-image", nullable=true, description="Additional image")
      * @FOSRest\Post("/page")
      * @Security("has_role('ROLE_USER')")
      */
@@ -140,6 +142,17 @@ class PageController extends Controller implements ClassResourceInterface
         }
 
         $page->addRevision($revision);
+
+        if ($contentFile = $paramFetcher->get('content-image')) {
+            $fileUploaderContent = $this->get('wiki.file_uploader_content');
+            $contentFileName = $fileUploaderContent->upload($contentFile);
+
+            $contentImage = new ContentImage();
+            $contentImage->setFilename($contentFileName);
+
+            $page->addContentImage($contentImage);
+        }
+
         $page->setCategory($category);
         $em->persist($page);
         $em->flush($page);
@@ -165,6 +178,20 @@ class PageController extends Controller implements ClassResourceInterface
     public function deleteAction(Page $page)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $fs = new Filesystem();
+        foreach ($page->getContentImages() as $ci) {
+            $fs->remove(array($this->getParameter('upload_path_content') . '/' . $ci->getFilename()));
+        }
+
+        foreach ($page->getRevisions() as $rev) {
+            $revImage = $rev->getMainImage();
+            
+            if (isset($revImage)) {
+                $fs->remove(array($this->getParameter('upload_path_banner') . '/' . $rev->getMainImage()));
+            }
+        }
+
         $em->remove($page);
         $em->flush($page);
 

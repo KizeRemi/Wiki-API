@@ -22,3 +22,6 @@ services:
     wiki.file_uploader:
         class: WikiBundle\Service\FileUploader
         arguments: ['%upload_path_banner%']
+    wiki.file_uploader_content:
+        class: WikiBundle\Service\FileUploader
+        arguments: ['%upload_path_content%']

@@ -43,6 +43,12 @@ class Page
     private $revisions;
 
     /**
+     * @ORM\OneToMany(targetEntity="ContentImage", mappedBy="page", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Exclude
+     */
+    private $contentImages;
+
+    /**
      * Get id
      *
      * @return int
@@ -189,5 +195,40 @@ class Page
     public function getViewCount()
     {
         return $this->viewCount;
+    }
+
+    /**
+     * Add contentImage
+     *
+     * @param \WikiBundle\Entity\ContentImage $contentImage
+     *
+     * @return Page
+     */
+    public function addContentImage(\WikiBundle\Entity\ContentImage $contentImage)
+    {
+        $contentImage->setPage($this);
+        $this->contentImages[] = $contentImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove contentImage
+     *
+     * @param \WikiBundle\Entity\ContentImage $contentImage
+     */
+    public function removeContentImage(\WikiBundle\Entity\ContentImage $contentImage)
+    {
+        $this->contentImages->removeElement($contentImage);
+    }
+
+    /**
+     * Get contentImages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContentImages()
+    {
+        return $this->contentImages;
     }
 }
