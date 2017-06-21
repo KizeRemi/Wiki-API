@@ -88,6 +88,7 @@ class RevisionController extends Controller implements ClassResourceInterface
     {
         $em = $this->getDoctrine()->getManager();
         $revision = $em->getRepository('WikiBundle:Revision')->getLatestOnlineRevisionByPage($page);
+        $this->get('wiki.counter.counter_view')->addView($page);
         return $revision;
     }
 
