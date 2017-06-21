@@ -17,12 +17,14 @@ Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : A
 - [x] Gestion des pages
 - [x] Recherche
 - [x] Rating
+- [x] Bannière 
 
 ### Optionnel
 - [x] Upload d'images
 - [ ] Système d'experience
 - [x] Commentaires
 - [x] Catégories
+- [x] Gallerie d'images
 
 ## Installation
 
@@ -64,9 +66,6 @@ Toutes les routes sont disponibles ici :
 http://wiki.remi-mavillaz.fr/api/doc
 
 **L'API EST EN LIGNE**
-
-Upload d'image: (Paul Girardin).
-Upload d'image secondaires pour une galerie. Sans résumé. 
 
 Système d'experience (A définir) en dernier et bonus.
 
