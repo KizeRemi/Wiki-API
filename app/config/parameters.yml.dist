@@ -21,3 +21,5 @@ parameters:
     jwt_public_key_path:  '%kernel.root_dir%/var/jwt/public.pem'    # ssh public key path
     jwt_key_pass_phrase:  'wiki'                                   # ssh key pass phrase if present
     jwt_token_ttl:        86400
+    upload_path_banner: images/banners
+    upload_path_content: images/gallery
