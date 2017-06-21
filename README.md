@@ -6,7 +6,7 @@ Wiki-API
 Github KizeRemi: https://github.com/KizeRemi  
 GitHub PaulGirardin: https://github.com/PaulGirardin
 
-Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : API et Interface utilisateur. Ce dépot comporte uniquement la partie API réalisé sous Symfony 3.2
+Projet Wiki pour une école primaire. Le projet est décomposé en 2 parties : API et Interface utilisateur. Ce dépot comporte uniquement la partie API réalisée sous Symfony 3.2
 
 ## Fonctionnalités
 
@@ -61,24 +61,12 @@ Authorization => Bearer montokenutilisateur
 ## Documentation
 
 Toutes les routes sont disponibles ici :
-www.wiki.remi-mavillaz.fr/api/doc
+http://wiki.remi-mavillaz.fr/api/doc
 
 **L'API EST EN LIGNE**
 
-
-TODO: 
-Recherche: (Remi Mavillaz)
-Rechercher LIKE par title et content. S'il écrit une catégorie alors renvoyer les pages d'une catégorie.
-
 Upload d'image: (Paul Girardin).
-Une image principale pour chaque revision. Et un résumé pour l'image principale (petit).
 Upload d'image secondaires pour une galerie. Sans résumé. 
-
-Commentaire (A définir):
-Utilisateur peuvent poster des commentaires sur une page.
-
-Système de rating  (A définir):
- de 1 à 5. Créer une route pour donner un score et la moyenne d'une revision.
 
 Système d'experience (A définir) en dernier et bonus.
 
